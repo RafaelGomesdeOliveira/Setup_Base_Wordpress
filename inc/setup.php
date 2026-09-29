@@ -8,8 +8,6 @@
 defined( 'ABSPATH' ) || exit;
 
 function base_theme_setup() {
-	load_theme_textdomain( 'wp-base', BASE_THEME_DIR . '/languages' );
-
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'custom-logo', array( 'height' => 80, 'width' => 240, 'flex-width' => true, 'flex-height' => true ) );
@@ -19,8 +17,8 @@ function base_theme_setup() {
 
 	register_nav_menus(
 		array(
-			'primary' => __( 'Menu principal', 'wp-base' ),
-			'footer'  => __( 'Menu do rodape', 'wp-base' ),
+			'primary' => 'Menu principal',
+			'footer'  => 'Menu do rodape',
 		)
 	);
 

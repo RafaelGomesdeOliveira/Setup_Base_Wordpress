@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-/* Todo .php do tema e escaneado: classe usada em template = classe gerada. */
 @source "../../**/*.php";
+@source "../../**/*.html";
 
-/* ---- Tokens do projeto: troque por os do cliente ---- */
+
 @theme {
 	--font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
@@ -13,7 +13,6 @@
 	--color-line: #e5e5e5;
 	--color-primary: #0a0a0a;
 
-	--container-page: 80rem; /* 1280px */
 }
 
 /* ---- Escala tipografica: mobile / desktop ---- */
@@ -27,30 +26,66 @@
 @utility text-h5 { @apply text-[14px] leading-[20px]; }
 @utility text-h6 { @apply text-[12px] leading-[16px]; }
 
-/* ---- Layout ---- */
-@utility container { @apply w-full max-w-(--container-page) mx-auto px-5 lg:px-10; }
-@utility container-narrow { @apply w-full max-w-3xl mx-auto px-5 lg:px-10; }
 
-/* ---- Componentes minimos ---- */
+/* ---- Componentes ---- */
 @utility btn { @apply inline-flex items-center justify-center px-5 py-3 bg-primary text-bg text-h5 uppercase tracking-wide no-underline hover:opacity-80 transition; }
 @utility input { @apply px-4 py-3 border border-line bg-bg text-fg focus:outline-none focus:border-fg; }
 
-/* Conteudo do editor (the_content). Sem plugin de typography para manter o base leve. */
-@utility prose {
-	@apply text-[16px] leading-[26px];
-	& > * + * { @apply mt-5; }
-	& h2 { @apply text-h2 lg:text-h2-desktop font-semibold mt-10; }
-	& h3 { @apply text-h3 lg:text-h3-desktop font-semibold mt-8; }
-	& a { @apply underline; }
-	& ul { @apply list-disc pl-6; }
-	& ol { @apply list-decimal pl-6; }
-	& img { @apply h-auto max-w-full; }
-	& blockquote { @apply border-l-2 border-line pl-4 text-muted; }
-}
 
 @layer base {
 	body { font-family: var(--font-sans); }
 	a { color: inherit; }
+}
+
+/* Nav menus (wp_nav_menu with the .nav-menu class + inc/nav-menu.php). Desktop: dropdown on
+   hover, nested levels continue the panel sideways. Mobile: accordion. .submenu-toggle
+   adds/removes .is-open on the <li> (assets/js/main.js), which opens the submenu on both
+   breakpoints. */
+@layer components {
+	.nav-menu li { @apply relative flex flex-wrap items-center justify-between gap-x-2 lg:flex-nowrap lg:justify-start lg:gap-x-1; }
+	.nav-menu > li > a { @apply transition-opacity hover:opacity-70; }
+
+	.submenu-toggle { @apply inline-flex items-center justify-center size-8 -my-2 -mr-2 cursor-pointer lg:size-5 lg:m-0; }
+	.submenu-toggle svg { @apply size-3 transition-transform duration-200; }
+
+	.nav-menu .sub-menu {
+		@apply hidden basis-full flex-col gap-3 pt-3 pl-4 normal-case tracking-normal
+			lg:flex lg:absolute lg:top-full lg:left-0 lg:z-50 lg:min-w-56 lg:mt-3 lg:px-0 lg:py-2 lg:gap-0
+			lg:bg-bg lg:border lg:border-line lg:rounded-md lg:shadow-lg
+			lg:invisible lg:opacity-0 lg:translate-y-2 lg:transition-[opacity,visibility,translate] lg:duration-200
+			lg:before:absolute lg:before:inset-x-0 lg:before:-top-3 lg:before:h-3;
+	}
+	/* Static items make nested flyouts position against the whole panel, not the item. */
+	.nav-menu .sub-menu li { @apply lg:static lg:hover:bg-line/50; }
+	.nav-menu .sub-menu a { @apply flex-1 lg:px-4 lg:py-2 lg:whitespace-nowrap; }
+	.nav-menu .sub-menu .submenu-toggle { @apply lg:mr-3; }
+	.nav-menu .sub-menu .submenu-toggle svg { @apply lg:-rotate-90; }
+
+	/* Nested levels continue the parent panel as one seamless block: same top, same height
+	   (JS grows the parent when the flyout is taller), no border or shadow between them.
+	   The parent's facing border turns transparent (keeps its width, shows the panel bg). */
+	.nav-menu .sub-menu .sub-menu {
+		@apply lg:-top-px lg:bottom-auto lg:left-full lg:m-0 lg:min-h-[calc(100%+2px)] lg:rounded-l-none lg:border-l-0
+			lg:translate-y-0 lg:[clip-path:inset(-24px_-24px_-24px_0)] lg:before:hidden;
+	}
+	.nav-menu .sub-menu:has(> li:is(:hover, .is-open) > .sub-menu) { @apply lg:rounded-r-none lg:border-r-transparent; }
+
+	.nav-menu li.is-open > .sub-menu { @apply flex; }
+	.nav-menu li:hover > .sub-menu,
+	.nav-menu li.is-open > .sub-menu { @apply lg:visible lg:opacity-100 lg:translate-x-0 lg:translate-y-0; }
+	/* A nested level opened by click must not outlive its closed top-level dropdown. */
+	.nav-menu > li:not(:hover, .is-open) .sub-menu { @apply lg:invisible; }
+
+	.nav-menu li.is-open > .submenu-toggle svg { @apply max-lg:rotate-180; }
+	.nav-menu > li:is(:hover, .is-open) > .submenu-toggle svg { @apply lg:rotate-180; }
+}
+
+/* Footer menu: submenus always visible, listed under their parent item. */
+@layer components {
+	.footer-menu > li > a { @apply text-fg; }
+	.footer-menu .sub-menu { @apply flex flex-col gap-2 mt-2; }
+	.footer-menu .sub-menu .sub-menu { @apply lg:pl-3; }
+	.footer-menu a { @apply transition-opacity hover:opacity-70; }
 }
 
 /* Paginacao nativa (the_posts_pagination) */

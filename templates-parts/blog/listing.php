@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 $title       = isset( $args['title'] ) ? (string) $args['title'] : '';
 $description = isset( $args['description'] ) ? (string) $args['description'] : '';
 ?>
-<section class="container py-12">
+<section class="w-full max-w-7xl mx-auto px-5 lg:px-10 py-12">
 	<?php if ( $title ) : ?>
 		<header class="mb-10">
 			<h1 class="text-h1 lg:text-h1-desktop font-semibold"><?php echo esc_html( $title ); ?></h1>
@@ -35,13 +35,13 @@ $description = isset( $args['description'] ) ? (string) $args['description'] : '
 		<?php
 		the_posts_pagination(
 			array(
-				'prev_text' => __( 'Anterior', 'wp-base' ),
-				'next_text' => __( 'Proximo', 'wp-base' ),
+				'prev_text' => 'Anterior',
+				'next_text' => 'Proximo',
 				'class'     => 'mt-12',
 			)
 		);
 		?>
 	<?php else : ?>
-		<p class="text-muted"><?php esc_html_e( 'Nenhum post encontrado.', 'wp-base' ); ?></p>
+		<p class="text-muted">Nenhum post encontrado.</p>
 	<?php endif; ?>
 </section>

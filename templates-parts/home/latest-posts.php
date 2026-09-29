@@ -20,10 +20,10 @@ if ( ! $latest->have_posts() ) {
 	return;
 }
 ?>
-<section class="container py-12" aria-labelledby="latest-posts-title">
+<section class="w-full max-w-7xl mx-auto px-5 lg:px-10 py-12" aria-labelledby="latest-posts-title">
 	<div class="flex items-end justify-between mb-8">
 		<h2 id="latest-posts-title" class="text-h2 lg:text-h2-desktop font-semibold"><?php echo esc_html( base_blog_title() ); ?></h2>
-		<a href="<?php echo esc_url( base_blog_url() ); ?>" class="text-h5 underline"><?php esc_html_e( 'Ver todos', 'wp-base' ); ?></a>
+		<a href="<?php echo esc_url( base_blog_url() ); ?>" class="text-h5 underline">Ver todos</a>
 	</div>
 
 	<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

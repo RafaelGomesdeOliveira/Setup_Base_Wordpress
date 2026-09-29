@@ -41,7 +41,7 @@ function base_get_card_data( $post = null ) {
 function base_blog_title() {
 	$page_id = (int) get_option( 'page_for_posts' );
 
-	return $page_id ? get_the_title( $page_id ) : __( 'Blog', 'wp-base' );
+	return $page_id ? get_the_title( $page_id ) : 'Blog';
 }
 
 /**
