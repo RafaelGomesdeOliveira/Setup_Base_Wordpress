@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* Todo .php do tema e escaneado: classe usada em template = classe gerada. */
+@source "../../**/*.php";
+
+/* ---- Tokens do projeto: troque por os do cliente ---- */
+@theme {
+	--font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+	--color-bg: #ffffff;
+	--color-fg: #0a0a0a;
+	--color-muted: #737373;
+	--color-line: #e5e5e5;
+	--color-primary: #0a0a0a;
+
+	--container-page: 80rem; /* 1280px */
+}
+
+/* ---- Escala tipografica: mobile / desktop ---- */
+@utility text-h1 { @apply text-[28px] leading-[32px]; }
+@utility text-h1-desktop { @apply text-[40px] leading-[44px]; }
+@utility text-h2 { @apply text-[22px] leading-[28px]; }
+@utility text-h2-desktop { @apply text-[28px] leading-[32px]; }
+@utility text-h3 { @apply text-[18px] leading-[24px]; }
+@utility text-h3-desktop { @apply text-[20px] leading-[28px]; }
+@utility text-h4 { @apply text-[16px] leading-[24px]; }
+@utility text-h5 { @apply text-[14px] leading-[20px]; }
+@utility text-h6 { @apply text-[12px] leading-[16px]; }
+
+/* ---- Layout ---- */
+@utility container { @apply w-full max-w-(--container-page) mx-auto px-5 lg:px-10; }
+@utility container-narrow { @apply w-full max-w-3xl mx-auto px-5 lg:px-10; }
+
+/* ---- Componentes minimos ---- */
+@utility btn { @apply inline-flex items-center justify-center px-5 py-3 bg-primary text-bg text-h5 uppercase tracking-wide no-underline hover:opacity-80 transition; }
+@utility input { @apply px-4 py-3 border border-line bg-bg text-fg focus:outline-none focus:border-fg; }
+
+/* Conteudo do editor (the_content). Sem plugin de typography para manter o base leve. */
+@utility prose {
+	@apply text-[16px] leading-[26px];
+	& > * + * { @apply mt-5; }
+	& h2 { @apply text-h2 lg:text-h2-desktop font-semibold mt-10; }
+	& h3 { @apply text-h3 lg:text-h3-desktop font-semibold mt-8; }
+	& a { @apply underline; }
+	& ul { @apply list-disc pl-6; }
+	& ol { @apply list-decimal pl-6; }
+	& img { @apply h-auto max-w-full; }
+	& blockquote { @apply border-l-2 border-line pl-4 text-muted; }
+}
+
+@layer base {
+	body { font-family: var(--font-sans); }
+	a { color: inherit; }
+}
+
+/* Paginacao nativa (the_posts_pagination) */
+@layer components {
+	.pagination .nav-links { @apply flex flex-wrap gap-2 justify-center; }
+	.pagination .page-numbers { @apply px-3 py-2 border border-line text-h5; }
+	.pagination .page-numbers.current { @apply bg-fg text-bg border-fg; }
+}
